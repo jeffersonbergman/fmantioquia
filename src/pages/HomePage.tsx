@@ -75,7 +75,7 @@ const HomePage = () => {
         <div 
           className="absolute inset-0 z-0 bg-center bg-cover bg-no-repeat"
           style={{
-            backgroundImage: "url('./assets/img/orchestra.jpg')",
+            backgroundImage: "url('../assets/img/orchestra.jpg')",
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/90 to-secondary-800/70"></div>
