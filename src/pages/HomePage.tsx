@@ -23,19 +23,19 @@ const HomePage = () => {
       id: 1,
       name: 'Ensaios',
       role: 'Ensaios conduzidos por professores de cada naipe',
-      image: 'src/assets/img/ensaios.jpg',
+      image: './assets/img/ensaios.jpg',
     },
     {
       id: 2,
       name: 'Palestras',
       role: 'Momentos de reflexão e aprendizado com convidados',
-      image: 'src/assets/img/palestra.jpg',
+      image: './assets/img/palestra.jpg',
     },
     {
       id: 3,
       name: 'Comunhão',
       role: 'Convívio, refeições partilhadas e tempo juntos, fortalecendo uns aos outros',
-      image: 'src/assets/img/Comunhao.jpg',
+      image: './assets/img/Comunhao.jpg',
     },
   ];
 
@@ -75,7 +75,7 @@ const HomePage = () => {
         <div 
           className="absolute inset-0 z-0 bg-center bg-cover bg-no-repeat"
           style={{
-            backgroundImage: "url('src/assets/img/orchestra.jpg')",
+            backgroundImage: "url('./assets/img/orchestra.jpg')",
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/90 to-secondary-800/70"></div>
