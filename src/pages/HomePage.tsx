@@ -23,19 +23,19 @@ const HomePage = () => {
       id: 1,
       name: 'Ensaios',
       role: 'Ensaios conduzidos por professores de cada naipe',
-      image: './assets/img/ensaios.jpg',
+      image: '/assets/img/ensaios.jpg',
     },
     {
       id: 2,
       name: 'Palestras',
       role: 'Momentos de reflexão e aprendizado com convidados',
-      image: './assets/img/palestra.jpg',
+      image: '/assets/img/palestra.jpg',
     },
     {
       id: 3,
       name: 'Comunhão',
       role: 'Convívio, refeições partilhadas e tempo juntos, fortalecendo uns aos outros',
-      image: './assets/img/Comunhao.jpg',
+      image: '/assets/img/Comunhao.jpg',
     },
   ];
 
@@ -75,7 +75,7 @@ const HomePage = () => {
         <div 
           className="absolute inset-0 z-0 bg-center bg-cover bg-no-repeat"
           style={{
-            backgroundImage: "url('../assets/img/orchestra.jpg')",
+            backgroundImage: "url('/assets/img/orchestra.jpg')",
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/90 to-secondary-800/70"></div>
@@ -211,7 +211,7 @@ const HomePage = () => {
             <div className="order-1 lg:order-2" data-aos="fade-left">
               <div className="relative">
                 <img 
-                  src="src/assets/img/ibaaw.jpg"
+                  src="/assets/img/ibaaw.jpg"
                   alt="Festival performance"
                   className="rounded-lg shadow-xl w-full h-auto"
                 />
