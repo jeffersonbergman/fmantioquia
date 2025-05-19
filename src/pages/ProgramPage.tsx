@@ -391,7 +391,7 @@ const ProgramPage = () => {
       </section>
 
       {/* Download Program */}
-      <section className="py-12 bg-primary text-white">
+      {/* <section className="py-12 bg-primary text-white">
         <div className="container">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
@@ -416,7 +416,7 @@ const ProgramPage = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 };

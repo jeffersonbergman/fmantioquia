@@ -12,7 +12,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <img 
-                src="src/assets/img/Logo-branco.png" 
+                src="/assets/img/Logo-branco.png" 
                 alt="Festival moment" 
                 className="h-18 transition-all duration-300"></img>
             </div>

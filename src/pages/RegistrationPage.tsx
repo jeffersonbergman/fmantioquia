@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Check, AlertCircle, Upload } from 'lucide-react';
@@ -13,44 +13,58 @@ import Button from '../components/UI/Button';
 const RegistrationPage = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const [instrumentLimitError, setInstrumentLimitError] = useState('');
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
-  
-  // Registration fee
+
   const registrationFee = {
     amount: 30,
     currency: '€',
     description: 'Full Festival Pass including all masterclasses, workshops, and performances',
   };
 
-  // Validation schema
+  const instruments = [
+    'Violin', 'Viola', 'Cello', 'Double Bass', 'Flute',
+    'Oboe', 'Clarinet', 'Bassoon', 'French Horn', 'Trumpet',
+    'Trombone', 'Tuba', 'Percussion', 'Harp',
+  ];
+
+  const totalSlots = 40;
+  const baseLimit = Math.floor(totalSlots / instruments.length);
+  const remainder = totalSlots % instruments.length;
+
+  const instrumentLimits = instruments.reduce((acc, inst, idx) => {
+    acc[inst] = baseLimit + (idx < remainder ? 1 : 0);
+    return acc;
+  }, {});
+
+  const [instrumentCounts, setInstrumentCounts] = useState(
+    instruments.reduce((acc, inst) => {
+      acc[inst] = 0;
+      return acc;
+    }, {})
+  );
+
+  useEffect(() => {
+    // Simulação ou fetch real dos registros por instrumento
+    // fetch('/api/registrations/counts')
+    //   .then(res => res.json())
+    //   .then(data => setInstrumentCounts(data));
+  }, []);
+
   const validationSchema = Yup.object({
-    fullName: Yup.string()
-      .required('Full name is required')
-      .min(2, 'Name must be at least 2 characters'),
-    email: Yup.string()
-      .email('Invalid email address')
-      .required('Email is required'),
-    phone: Yup.string()
-      .required('Phone number is required')
-      .matches(/^[0-9+\s()-]{8,20}$/, 'Invalid phone number format'),
-    instrument: Yup.string()
-      .required('Please select your instrument'),
-    experience: Yup.string()
-      .required('Please describe your orchestral experience'),
-    videoFile: Yup.mixed()
-      .required('Please upload your audition video'),
+    fullName: Yup.string().required('Full name is required').min(2, 'Name must be at least 2 characters'),
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    phone: Yup.string().required('Phone number is required').matches(/^[0-9+\s()-]{8,20}$/, 'Invalid phone number format'),
+    instrument: Yup.string().required('Please select your instrument'),
+    experience: Yup.string().required('Please describe your orchestral experience'),
+    videoFile: Yup.mixed().required('Please upload your audition video'),
     specialRequirements: Yup.string(),
-    agreeTerms: Yup.boolean()
-      .oneOf([true], 'You must agree to the terms and conditions')
-      .required('You must agree to the terms and conditions'),
-    agreePrivacy: Yup.boolean()
-      .oneOf([true], 'You must agree to the privacy policy')
-      .required('You must agree to the privacy policy'),
+    agreeTerms: Yup.boolean().oneOf([true], 'You must agree to the terms and conditions'),
+    agreePrivacy: Yup.boolean().oneOf([true], 'You must agree to the privacy policy'),
   });
 
-  // Form handling
   const formik = useFormik({
     initialValues: {
       fullName: '',
@@ -65,6 +79,17 @@ const RegistrationPage = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
+      setInstrumentLimitError('');
+
+      const selectedInstrument = values.instrument;
+      const currentCount = instrumentCounts[selectedInstrument] || 0;
+      const maxAllowed = instrumentLimits[selectedInstrument];
+
+      if (currentCount >= maxAllowed) {
+        setInstrumentLimitError(`Sorry, we have reached the limit for ${selectedInstrument}. Please select another instrument or contact us.`);
+        return;
+      }
+
       try {
         if (!user) {
           navigate('/login', { state: { from: '/registration' } });
@@ -79,33 +104,15 @@ const RegistrationPage = () => {
           products.festival.mode,
           user.token,
           successUrl,
-          cancelUrl,
+          cancelUrl
         );
 
         window.location.href = checkoutUrl;
       } catch (error) {
         console.error('Error creating checkout session:', error);
-        // Handle error appropriately
       }
     },
   });
-
-  const instruments = [
-    'Violin',
-    'Viola',
-    'Cello',
-    'Double Bass',
-    'Flute',
-    'Oboe',
-    'Clarinet',
-    'Bassoon',
-    'French Horn',
-    'Trumpet',
-    'Trombone',
-    'Tuba',
-    'Percussion',
-    'Harp',
-  ];
 
   return (
     <>

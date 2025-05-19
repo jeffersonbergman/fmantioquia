@@ -13,6 +13,10 @@
   --foreground: #182737;
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
 @layer base {
   html {
     @apply scroll-smooth;

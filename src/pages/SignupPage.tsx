@@ -32,9 +32,9 @@ const SignupPage = () => {
     <div className="min-h-screen flex items-center justify-center px-4 py-32">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-bold">Create your account</h2>
+          <h2 className="mt-6 text-center text-3xl font-bold">Crie a sua conta</h2>
           <p className="mt-2 text-center text-gray-600">
-            Already have an account?{' '}
+            Você já tem uma conta?{' '}
             <Link to="/login" className="text-primary hover:text-primary-600">
               Sign in
             </Link>

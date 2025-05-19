@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Music, Menu, X, Calendar, Users, MapPin, Image, ClipboardSignature } from 'lucide-react';
+import { Music, Menu, X, Calendar, Users, MapPin, Image, ClipboardSignature, User2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
+import { useAuth } from '../../hooks/useAuth';
 
 interface HeaderProps {
   isScrolled: boolean;
@@ -21,39 +22,52 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
     setIsMenuOpen(false);
   }, [location]);
 
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+const [showMenu, setShowMenu] = useState(false);
 
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isMenuOpen]);
+  useEffect(() => {
+  if (isMenuOpen) {
+    const timeout = setTimeout(() => {
+      setShowMenu(true);
+    }, 50); // tempo suficiente para aplicar CSS
+    return () => clearTimeout(timeout);
+  } else {
+    setShowMenu(false);
+  }
+}, [isMenuOpen]);
+
+const { user, signOut } = useAuth();
+
+const handleLogout = async () => {
+  try {
+    await signOut();
+    // Se quiser, redirecione:
+    // navigate('/login');
+  } catch (err) {
+    console.error('Erro ao fazer logout:', err);
+  }
+};
 
   const navLinks = [
     { name: t('navigation.program'), path: '/program', icon: <Calendar size={18} /> },
     { name: t('navigation.about'), path: '/about', icon: <Users size={18} /> },
     { name: t('navigation.venue'), path: '/venue', icon: <MapPin size={18} /> },
     { name: t('navigation.registration'), path: '/registration', icon: <ClipboardSignature size={18} /> },
-    { name: t('navigation.gallery'), path: '/gallery', icon: <Image size={18} /> },
+    // { name: t('navigation.gallery'), path: '/gallery', icon: <Image size={18} /> },
   ];
 
   return (
     <header
       className={clsx(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        isScrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-5'
-      )}
-    >
-      <div className="container flex items-center justify-between">
+    'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+    isScrolled ? 'bg-white shadow-md py-3' : 'bg-transparent md:bg-transparent bg-primary-500 py-5'
+  )}
+>
+      <div className="w-full max-w-screen-xl mx-auto px-4 flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2 z-20">
           <img
-            src={isScrolled ? "src/assets/img/logo-azul.png" : "src/assets/img/logo-azul.png"}
+            src={isScrolled ? "/assets/img/logo-azul.png" : "/assets/img/logo-azul.png"}
             alt="Festival Antioquia Logo"
-            className="h-16 transition-all duration-300"
+            className="h-16 max-w-[150px] w-auto"
           />
         </Link>
 
@@ -76,8 +90,25 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
               </NavLink>
             ))}
           </nav>
+          {user && (
+            <details className="relative group">
+              <summary className="cursor-pointer list-none">
+                <User2 className={isScrolled ? 'w-8 h-8 rounded-full border-2 border-primary text-secundary' : 'w-8 h-8 rounded-full border-2 border-secundary text-white'} size={24} />
+              </summary>
+              <ul className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-md text-sm z-50">
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            </details>
+          )}
 
-          <button
+          {/* <button
             onClick={toggleLanguage}
             className={clsx(
               'px-3 py-1 rounded-md border transition-colors duration-300',
@@ -87,7 +118,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
             )}
           >
             {i18n.language === 'en' ? 'PT' : 'EN'}
-          </button>
+          </button> */}
         </div>
 
         <button
@@ -102,9 +133,17 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
           )}
         </button>
 
-        {isMenuOpen && (
-          <div className="md:hidden fixed inset-0 bg-primary-500 flex flex-col items-center justify-center animate-fade-in">
+        {isMenuOpen && showMenu &&(
+          <div className="md:hidden fixed inset-0 bg-primary-500 w-full overflow-x-hidden flex flex-col items-center justify-center animate-fade-in">
             <nav className="flex flex-col items-center space-y-6 py-8">
+              {user && (
+                <button
+                  onClick={handleLogout}
+                  className="text-white text-xl flex items-center space-x-2 hover:underline"
+                >
+                  <span>Logout</span>
+                </button>
+              )},
               {navLinks.map((link) => (
                 <NavLink
                   key={link.path}
@@ -120,12 +159,12 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
                   <span>{link.name}</span>
                 </NavLink>
               ))}
-              <button
+              {/* <button
                 onClick={toggleLanguage}
                 className="px-4 py-2 border border-white text-white rounded-md hover:bg-white hover:text-primary transition-colors duration-300"
               >
                 {i18n.language === 'en' ? 'PT' : 'EN'}
-              </button>
+              </button> */}
             </nav>
           </div>
         )}

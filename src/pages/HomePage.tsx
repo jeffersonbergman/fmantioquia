@@ -23,19 +23,19 @@ const HomePage = () => {
       id: 1,
       name: 'Ensaios',
       role: 'Ensaios conduzidos por professores de cada naipe',
-      image: 'festivalantioquia/assets/img/ensaios.jpg',
+      image: '/assets/img/ensaios.jpg',
     },
     {
       id: 2,
       name: 'Palestras',
       role: 'Momentos de reflexão e aprendizado com convidados',
-      image: 'festivalantioquia/assets/img/palestra.jpg',
+      image: '/assets/img/palestra.jpg',
     },
     {
       id: 3,
       name: 'Comunhão',
       role: 'Convívio, refeições partilhadas e tempo juntos, fortalecendo uns aos outros',
-      image: 'festivalantioquia/assets/img/Comunhao.jpg',
+      image: '/assets/img/Comunhao.jpg',
     },
   ];
 
@@ -70,12 +70,13 @@ const HomePage = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-screen min-h-[600px] flex items-center justify-center text-white overflow-hidden">
+      <section className="relative h-screen min-h-[600px] flex items-center justify-center text-white overflow-hidden overflow-x-hidden">
+
         {/* Background Image */}
         <div 
           className="absolute inset-0 z-0 bg-center bg-cover bg-no-repeat"
           style={{
-            backgroundImage: "url('festivalantioquia/assets/img/orchestra.jpg')",
+            backgroundImage: "url('/assets/img/orchestra.jpg')",
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/90 to-secondary-800/70"></div>
@@ -91,30 +92,21 @@ const HomePage = () => {
               {formatDate(festivalStart)} - {formatDate(festivalEnd)}
             </div>
             <h1 
-              className="font-display font-black"
-              data-aos="fade-up"
-              style={{
-                      fontFamily: `"Varela Round", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`,
-                      textTransform: "uppercase",
-                      background: "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0))",
-                      fontSize: "6.5rem",
-                      fontWeight: "normal",
-                      lineHeight: "6.5rem",
-                      letterSpacing: "0.8rem",
-                      backgroundClip: "text",
-                      display: "inline",
-                      WebkitTextFillColor: "transparent",
-                      WebkitBackgroundClip: "text", // importante para o efeito funcionar no Chrome/Safari
-                    }}
+              className="
+                font-display font-black uppercase
+                bg-gradient-to-b from-white/90 to-white/0 
+                bg-clip-text text-transparent 
+                text-[2rem] leading-tight tracking-wide
+                sm:text-[3rem] md:text-[4rem] lg:text-[5rem] xl:text-[6.5rem] 
+                text-center break-words
+              "
             >
               Festival de Música Antioquia
             </h1>
-            <p 
-              className="text-lg md:text-xl mb-8 text-gray-400"
-              data-aos="fade-up"
-              data-aos-delay="100"
-            >
-              ADORAÇÃO E SERVIÇO <p></p>
+            <p className="text-lg md:text-xl mb-2 text-gray-400">
+              ADORAÇÃO E SERVIÇO
+            </p>
+            <p className="text-lg md:text-xl mb-8 text-gray-400">
               IGREJA BAPTISTA ANTIOQUIA • PORTO
             </p>
             <div 
@@ -211,7 +203,7 @@ const HomePage = () => {
             <div className="order-1 lg:order-2" data-aos="fade-left">
               <div className="relative">
                 <img 
-                  src="festivalantioquia/assets/img/ibaaw.jpg"
+                  src="/assets/img/ibaaw.jpg"
                   alt="Festival performance"
                   className="rounded-lg shadow-xl w-full h-auto"
                 />
@@ -344,7 +336,7 @@ const HomePage = () => {
       </section>
 
       {/* Gallery Preview Section */}
-      <section className="section bg-white">
+      {/* <section className="section bg-white">
         <div className="container">
           <SectionTitle
             title="Galeria de Fotos"
@@ -389,7 +381,7 @@ const HomePage = () => {
             </Link>
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 };
