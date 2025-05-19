@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import HomePage from './pages/HomePage';
 import ProgramPage from './pages/ProgramPage';
@@ -24,7 +24,7 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <BrowserRouter basename="/fmantioquia">
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -39,7 +39,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout>
-    </Router>
+    </BrowserRouter >
   );
 }
 
