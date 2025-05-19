@@ -65,7 +65,7 @@ const handleLogout = async () => {
       <div className="w-full max-w-screen-xl mx-auto px-4 flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2 z-20">
           <img
-            src={isScrolled ? "/assets/img/logo-azul.png" : "/assets/img/logo-azul.png"}
+            src={isScrolled ? "/assets/img/logo-azul.png" : "/assets/img/logobranco.png"}
             alt="Festival Antioquia Logo"
             className="h-16 max-w-[150px] w-auto"
           />
