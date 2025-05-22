@@ -115,8 +115,8 @@ const HomePage = () => {
               data-aos-delay="200"
             >
               <Link to="/registration">
-                <Button size="lg" variant="primary" icon={<ChevronRight size={18} />} iconPosition="right">
-                  Inscreva-se
+                <Button size="lg" variant="primary" icon={<ChevronRight size={18} />} iconPosition="right" disabled>
+                  Inscrições em breve
                 </Button>
               </Link>
               <Link to="/program">
@@ -143,7 +143,7 @@ const HomePage = () => {
             <div className="order-2 lg:order-1">
               <SectionTitle
                 title="Conheça o Festival de Música Antioquia"
-                subtitle={`Louvem-no pelos seus poderosos feitos; louvem-no segundo a sua imensa grandeza.\nSalmos 150:2`}
+                subtitle={`"Cantai-Lhe um cântico novo; tocai bem e com júbilo."\nSalmos 33:3`}
                 centered={false}
               />
               <p className="mb-6 text-gray-700" data-aos="fade-up" data-aos-delay="100">
@@ -177,6 +177,15 @@ const HomePage = () => {
                 </div>
                 <div className="flex items-start space-x-3">
                   <div className="bg-primary/10 p-3 rounded-lg">
+                    <Users className="text-primary" size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-lg mb-1">Convívio e conexão</h4>
+                    <p className="text-gray-600">Compartilhe experiências, testemunhos e amizades que vão além do evento</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="bg-primary/10 p-3 rounded-lg">
                     <MapPin className="text-primary" size={24} />
                   </div>
                   <div>
@@ -184,15 +193,7 @@ const HomePage = () => {
                     <p className="text-gray-600">Espaços que acolhem mais do que som: acolhem propósito</p>
                   </div>
                 </div>
-                <div className="flex items-start space-x-3">
-                  <div className="bg-primary/10 p-3 rounded-lg">
-                    <Users className="text-primary" size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-lg mb-1">Convivio e conexão</h4>
-                    <p className="text-gray-600">Compartilhe experiências, testemunhos e amizades que vão além do evento</p>
-                  </div>
-                </div>
+                
               </div>
               <Link to="/program" data-aos="fade-up" data-aos-delay="250">
                 <Button variant="primary">
@@ -243,7 +244,7 @@ const HomePage = () => {
                 <div className="p-6">
                   <h3 className="text-xl font-bold mb-1">{artist.name}</h3>
                   <p className="text-gray-600 mb-4">{artist.role}</p>
-                  <Link to="/artists" className="text-primary font-medium hover:text-primary-700 inline-flex items-center">
+                  <Link to="/about" className="text-primary font-medium hover:text-primary-700 inline-flex items-center">
                     Saiba mais
                     <ChevronRight size={16} className="ml-1" />
                   </Link>
@@ -328,6 +329,7 @@ const HomePage = () => {
               size="lg" 
               variant="outline" 
               className="border-white text-white hover:bg-primary hover:text-primary"
+              disabled
             >
               Inscreva-se
             </Button>

@@ -17,13 +17,13 @@ const Footer = () => {
                 className="h-18 transition-all duration-300"></img>
             </div>
             <div className="flex space-x-4" style={{justifyContent: 'center'}}>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-accent transition-colors duration-300" aria-label="Facebook">
+              <a href="https://www.facebook.com/profile.php?id=61574532133047" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-accent transition-colors duration-300" aria-label="Facebook">
                 <Facebook size={20} />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-accent transition-colors duration-300" aria-label="Instagram">
+              <a href="https://www.instagram.com/festivalmusicaantioquia" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-accent transition-colors duration-300" aria-label="Instagram">
                 <Instagram size={20} />
               </a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-accent transition-colors duration-300" aria-label="Youtube">
+              <a href="https://www.youtube.com/@ibaporto" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-accent transition-colors duration-300" aria-label="Youtube">
                 <Youtube size={20} />
               </a>
             </div>
@@ -40,14 +40,14 @@ const Footer = () => {
                 <Link to="/program" className="text-gray-300 hover:text-accent transition-colors duration-300">Programa</Link>
               </li>
               <li>
-                <Link to="/artists" className="text-gray-300 hover:text-accent transition-colors duration-300">Sobre</Link>
+                <Link to="/about" className="text-gray-300 hover:text-accent transition-colors duration-300">Sobre</Link>
               </li>
               <li>
                 <Link to="/venue" className="text-gray-300 hover:text-accent transition-colors duration-300">Local</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/registration" className="text-gray-300 hover:text-accent transition-colors duration-300">Inscrição</Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 

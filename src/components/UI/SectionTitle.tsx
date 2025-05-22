@@ -39,6 +39,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
             centered && 'mx-auto',
             light ? 'text-gray-300' : 'text-gray-600'
           )}
+          style={{ whiteSpace: 'pre-line' }}
           data-aos="fade-up"
           data-aos-delay="100"
         >
