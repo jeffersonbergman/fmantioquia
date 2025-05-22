@@ -317,9 +317,12 @@ const HomePage = () => {
             className="text-lg md:text-xl max-w-2xl mx-auto mb-8"
             data-aos="fade-up"
             data-aos-delay="100"
-          >
-            Garante a tua vaga no Festival de Música Antioquia 2025. <br>Inscrições limitadas por instrumento. </br><br>Dúvidas? Contate-nos: festivalantioquia@gmail.com</br>
-          </p>
+          >Garante a tua vaga no Festival de Música Antioquia 2025.
+          <br />
+          Inscrições limitadas por instrumento.
+          <br />
+          Dúvidas? Contate-nos: festivalantioquia@gmail.com
+        </p>
           <Link 
             to="/registration"
             data-aos="fade-up"
