@@ -37,23 +37,23 @@ const ProgramPage = () => {
     day2: [
       {
         id: 1,
-        title: 'Welcome',
-        time: '08:00 - 09:30',
+        title: 'Pequeno Almoço',
+        time: '08:00 - 09:00',
         location: 'Entrada Principal',
         category: 'all',
         description: 'Estaremos prontos para receber-te e entregar o teu kit de participante, e junte-se a nós no pequeno almoço.',
       },
       {
         id: 2,
-        title: 'Devocional matinal',
-        time: '09:30 - 10:00',
+        title: 'Devocional',
+        time: '09:30 - 09:50',
         location: 'Salão Principal',
         category: 'all',
         description: 'Teremos todos os dias pela manhã o nosso devocional diário após o pequeno almoço, para começar bem o dia.',
       },
       {
         id: 4,
-        title: 'Divisão de nipes',
+        title: 'Ensaios de Nipe',
         time: '10:00 - 11:30',
         location: 'Salas de instrumento',
         category: 'all',
@@ -70,15 +70,15 @@ const ProgramPage = () => {
       },
       {
         id: 6,
-        title: 'Convívio/Almoço',
-        time: '13:00 - 15:00',
+        title: 'Almoço',
+        time: '13:00 - 14:30',
         location: 'EMU - Espaço Multi-uso',
         category: 'all',
         description: 'Teremos bons momentos juntos, compartilhando experiências e degustando uma boa refeição',
         highlight: true,
       },{
         id: 7,
-        title: 'Ensaios de nipe',
+        title: 'Ensaios de Nipe',
         time: '15:00 - 16:00',
         location: 'Salas de instrumentos',
         category: 'all',
@@ -95,7 +95,7 @@ const ProgramPage = () => {
       {
         id: 9,
         title: 'Ensaios Gerais',
-        time: '17:15 - 19:00',
+        time: '17:00 - 18:45',
         location: 'Salão Principal',
         category: 'all',
         description: 'Momentos em que reunimos toda a malta para o ensaio geral.',
@@ -104,7 +104,7 @@ const ProgramPage = () => {
       {
         id: 10,
         title: 'Jantar',
-        time: '19:00 - 21:00',
+        time: '19:00 - 20:30',
         location: 'EMU- Espaço Multi-uso',
         category: 'all',
         description: 'Estaremos reunidos no EMU para desfrutar de mais uma refeição.',
@@ -115,7 +115,7 @@ const ProgramPage = () => {
         time: '21:00 - 22:00',
         location: 'Salão principal',
         category: 'all',
-        description: 'As palestras serão ministradas com os temas desta edição do Festival. Tomem nota para fazerem perguntas aos ministro.',
+        description: 'As palestras serão ministradas com os temas desta edição do Festival. Anotem dúvidas ou questões - teremos um momento para as partilhares.',
         highlight: true,
       }
     ],
@@ -282,8 +282,8 @@ const ProgramPage = () => {
       <section className="pt-32 pb-16 bg-secondary text-white">
         <div className="container">
           <SectionTitle
-            title="Festival Program"
-            subtitle="Explore the full schedule of events, performances, and activities for Festival Antioquia 2025"
+            title="Programa"
+            subtitle="Horário dos eventos e atividades ao longo de todo o Festival."
             centered={true}
             light={true}
           />

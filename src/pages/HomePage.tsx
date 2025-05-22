@@ -43,7 +43,7 @@ const HomePage = () => {
   const upcomingEvents = [
     {
       id: 1,
-      title: 'Abertura do evento',
+      title: 'Abertura do Evento',
       date: 'Agosto 13, 2025',
       time: '21:00',
       location: 'Salão Principal',
@@ -51,19 +51,19 @@ const HomePage = () => {
     },
     {
       id: 2,
-      title: 'Mesa redonda',
+      title: 'Mesa Redonda',
       date: 'Agosto 15, 2025',
       time: '20:00 - 22:00',
       location: 'Salão Principal',
-      description: 'Mesa redonda com palestrantes respondendo perguntas e debatendo o tema. Evento aberto ao público, com entrada de 1€ e reserva antecipada necessária devido à lotação limitada.',
+      description: 'Mesa redonda com perguntas e respostas com os palestrantes. Aberto ao público com reserva antecipada (lotação limitada).',
     },
     {
       id: 3,
-      title: 'Concerto final',
+      title: 'Concerto Final',
       date: 'Agosto 16, 2025',
       time: '16:00 - 17:30',
       location: 'Salão Principal',
-      description: 'Dará encerramento ao festival. Evento Aberto ao público, com reserva antecipada devido à lotação limitada.',
+      description: 'Dará encerramento ao festival. Aberto ao público com reserva antecipada (lotação limitada).',
     },
   ];
 
@@ -168,19 +168,10 @@ const HomePage = () => {
                 </div>
                 <div className="flex items-start space-x-3">
                   <div className="bg-primary/10 p-3 rounded-lg">
-                    <Calendar className="text-primary" size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-lg mb-1">4 Dias de Evento</h4>
-                    <p className="text-gray-600">Palestras, partilhas, momentos de oração e muita música</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="bg-primary/10 p-3 rounded-lg">
                     <Users className="text-primary" size={24} />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-lg mb-1">Convívio e conexão</h4>
+                    <h4 className="font-semibold text-lg mb-1">Convívio e Conexão</h4>
                     <p className="text-gray-600">Compartilhe experiências, testemunhos e amizades que vão além do evento</p>
                   </div>
                 </div>
@@ -191,6 +182,15 @@ const HomePage = () => {
                   <div>
                     <h4 className="font-semibold text-lg mb-1">Ambiente de Serviço</h4>
                     <p className="text-gray-600">Espaços que acolhem mais do que som: acolhem propósito</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="bg-primary/10 p-3 rounded-lg">
+                    <Calendar className="text-primary" size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-lg mb-1">4 Dias de Evento</h4>
+                    <p className="text-gray-600">Palestras, partilhas, momentos de oração e muita música</p>
                   </div>
                 </div>
                 
@@ -266,8 +266,8 @@ const HomePage = () => {
       <section className="section bg-secondary-900 text-white">
         <div className="container">
           <SectionTitle
-            title="Detalhes do Evento"
-            subtitle="Reserve esses momentos na sua agenda para não perder as principais atividades."
+            title="Detalhes do Festival"
+            subtitle="Reserva estes eventos na tua agenda para não perderes as principais atividades."
             centered={true}
             light={true}
           />
@@ -311,14 +311,14 @@ const HomePage = () => {
             className="text-3xl md:text-4xl font-display font-bold mb-6"
             data-aos="fade-up"
           >
-            Venha louvar e adorar conosco — Inscreva-se
+            Serve com o talento que Deus te deu — Inscreve-te!
           </h2>
           <p 
             className="text-lg md:text-xl max-w-2xl mx-auto mb-8"
             data-aos="fade-up"
             data-aos-delay="100"
           >
-            Garanta sua vaga no Festival de Música Antioquia 2025. Inscrições limitadas por instrumento. Dúvidas? Contate-nos: festivalantioquia@gmail.com
+            Garante a tua vaga no Festival de Música Antioquia 2025. <br>Inscrições limitadas por instrumento. </br><br>Dúvidas? Contate-nos: festivalantioquia@gmail.com</br>
           </p>
           <Link 
             to="/registration"
@@ -331,7 +331,7 @@ const HomePage = () => {
               className="border-white text-white hover:bg-primary hover:text-primary"
               disabled
             >
-              Inscreva-se
+              INSCRIÇÃO
             </Button>
           </Link>
         </div>
