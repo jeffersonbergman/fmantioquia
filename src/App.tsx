@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import HomePage from './pages/HomePage';
 import ProgramPage from './pages/ProgramPage';
@@ -18,7 +18,7 @@ import './i18n';
 
 function App() {
   useEffect(() => {
-    AOS.init({
+    AOS.init({  
       duration: 800,
       once: false,
     });
