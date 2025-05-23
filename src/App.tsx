@@ -8,6 +8,7 @@ import VenuePage from './pages/VenuePage';
 import RegistrationPage from './pages/RegistrationPage';
 import RegistrationSuccessPage from './pages/RegistrationSuccessPage';
 import GalleryPage from './pages/GalleryPage';
+import ScrollToTop from './pages/ScrollToTop';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -26,6 +27,7 @@ function App() {
   return (
     <Router>
       <Layout>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/program" element={<ProgramPage />} />
