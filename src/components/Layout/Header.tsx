@@ -51,7 +51,7 @@ const handleLogout = async () => {
     { name: t('navigation.program'), path: '/program', icon: <Calendar size={18} /> },
     { name: t('navigation.about'), path: '/about', icon: <Users size={18} /> },
     { name: t('navigation.venue'), path: '/venue', icon: <MapPin size={18} /> },
-    { name: t('navigation.registration'), path: '/registration', icon: <ClipboardSignature size={18} /> },
+    // { name: t('navigation.registration'), path: '/registration', icon: <ClipboardSignature size={18} /> },
     // { name: t('navigation.gallery'), path: '/gallery', icon: <Image size={18} /> },
   ];
 

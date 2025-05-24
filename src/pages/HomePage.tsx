@@ -142,19 +142,19 @@ const HomePage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="order-2 lg:order-1">
               <SectionTitle
-                title="Conheça o Festival de Música Antioquia"
+                title="Conhece o Festival de Música Antioquia"
                 subtitle={`"Cantai-Lhe um cântico novo; tocai bem e com júbilo."\nSalmos 33:3`}
                 centered={false}
               />
               <p className="mb-6 text-gray-700" data-aos="fade-up" data-aos-delay="100">
                 A primeira edição deste evento tem como objetivo criar um espaço para músicos cristãos que, muitas vezes, não encontram oportunidades para tocar os seus instrumentos orquestrais nas suas igrejas. 
-                Queremos oferecer-lhes um ambiente onde possam desenvolver as suas habilidades musicais e técnicas, além de aprofundar o seu entendimento bíblico e espiritual.
+                Queremos oferecer-lhes um ambiente onde possam exercitar as suas habilidades musicais, além de aprofundar o seu entendimento bíblico sobre a música.
               </p>
               <p className="mb-6 text-gray-700" data-aos="fade-up" data-aos-delay="150">
-                A nossa missão é ajudá-los a refletir e amadurecer a forma como percebem o tempo de adoração congregacional, 
-                valorizando a música sacra como uma expressão genuína de louvor a Deus. Durante o Festival de Música, 
-                os participantes terão acesso a diversas oficinas ministradas por professores cristãos experientes, que combinam maturidade espiritual com excelência técnica. 
-                Esses momentos proporcionarão aprendizagem, inspiração e conexão com outros músicos que partilham a mesma fé.
+                Haverá a oportunidade de refletir a forma como entendemos o tempo de adoração congregacional, 
+                assim como entender a música erudita como uma parte da expressão genuína de louvor a Deus.Durante o Festival de Música, 
+                os participantes terão acesso a diversas atividades com outros músicos cristãos, que combinam maturidade espiritual com excelência técnica. 
+                Esses momentos proporcionarão aprendizagem, inspiração e conexão com outros músicos que partilham da mesma fé.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8" data-aos="fade-up" data-aos-delay="200">
                 <div className="flex items-start space-x-3">
@@ -163,7 +163,6 @@ const HomePage = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">Música e Adoração</h4>
-                    <p className="text-gray-600">Aprenda a viver a música como instrumento de adoração.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
@@ -172,7 +171,6 @@ const HomePage = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">Convívio e Conexão</h4>
-                    <p className="text-gray-600">Compartilhe experiências, testemunhos e amizades que vão além do evento</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
@@ -181,7 +179,6 @@ const HomePage = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">Ambiente de Serviço</h4>
-                    <p className="text-gray-600">Espaços que acolhem mais do que som: acolhem propósito</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
@@ -190,7 +187,6 @@ const HomePage = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">4 Dias de Evento</h4>
-                    <p className="text-gray-600">Palestras, partilhas, momentos de oração e muita música</p>
                   </div>
                 </div>
                 
@@ -223,7 +219,6 @@ const HomePage = () => {
         <div className="container">
           <SectionTitle
             title="Como Funciona o Evento"
-            subtitle="Entenda a estrutura dos quatro dias de festival"
             centered={true}
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -69,17 +69,17 @@ const AboutPage = () => {
     {
       title: 'Acessibilidade',
       details: [
-        'Todos os locais são acessíveis para cadeiras de rodas',
+        'Acessibilidade para cadeiras de rodas',
         'Casa de banho acessível em todos os locais',
-        'Assentos reservados para visitantes com deficiência (solicitar com antecedência)'
+        'Lugares reservados para visitantes com mobilidade reduzida.'
       ]
     },
     {
-      title: 'Comida e bebida',
+      title: 'Comida e Bebida',
       details: [
-        'Toda alimentação incluida no valor da Inscrição',
+        'Toda alimentação incluida no valor da inscrição',
         'Momentos para lanche e café.',
-        'Bebedouros em todos os locais',
+        'Fontes de Água em todos os locais',
         'Não é permitido comer fora do local adequado.'
       ]
     },
@@ -121,7 +121,7 @@ const AboutPage = () => {
         <div className="container">
           <SectionTitle
             title="Informações Práticas	"
-            subtitle="Tudo o que você precisa saber para aproveitar ao máximo sua experiência no festival"
+            subtitle="Tudo o que precisas saber para aproveitar ao máximo a tua experiência no festival"
             centered={true}
           />
           
@@ -174,7 +174,7 @@ const AboutPage = () => {
         </div>
       </section> */}
 
-      <section className="py-16 bg-white">
+      {/* <section className="py-16 bg-white">
         <div className="container">
           <h2 className="text-3xl font-display font-bold mb-12 text-center">Organizadores</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -201,7 +201,7 @@ const AboutPage = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 };

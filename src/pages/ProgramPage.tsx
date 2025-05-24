@@ -41,7 +41,7 @@ const ProgramPage = () => {
         time: '08:00 - 09:00',
         location: 'Entrada Principal',
         category: 'all',
-        description: 'Estaremos prontos para receber-te e entregar o teu kit de participante, e junte-se a nós no pequeno almoço.',
+        
       },
       {
         id: 2,
@@ -49,15 +49,14 @@ const ProgramPage = () => {
         time: '09:30 - 09:50',
         location: 'Salão Principal',
         category: 'all',
-        description: 'Teremos todos os dias pela manhã o nosso devocional diário após o pequeno almoço, para começar bem o dia.',
-      },
+        },
       {
         id: 4,
         title: 'Ensaios de Nipe',
         time: '10:00 - 11:30',
         location: 'Salas de instrumento',
         category: 'all',
-        description: 'Os músicos serão direcionados as salas de instrumento para poderem ter o primeiro contacto com o seu professor, onde irá guiar os ensaios e tirar suas dúvidas.',
+        highlight: true
       },
       {
         id: 5,
@@ -74,15 +73,13 @@ const ProgramPage = () => {
         time: '13:00 - 14:30',
         location: 'EMU - Espaço Multi-uso',
         category: 'all',
-        description: 'Teremos bons momentos juntos, compartilhando experiências e degustando uma boa refeição',
-        highlight: true
-      },{
+        },{
         id: 7,
         title: 'Ensaios de Nipe',
         time: '15:00 - 16:00',
         location: 'Salas de instrumentos',
         category: 'all',
-        description: 'Os alunos devem ir até as salas de seu nipe, para os ensaios do dia.',
+        highlight: true
       },
       {
         id: 8,
@@ -90,15 +87,13 @@ const ProgramPage = () => {
         time: '16:00 - 17:00',
         location: 'All Space',
         category: 'all',
-        description: 'Learn to prepare traditional dishes from the Antioquia region with local chefs.',
-      },
+        },
       {
         id: 9,
-        title: 'Ensaios Gerais',
+        title: 'Ensaio Tutti',
         time: '17:00 - 18:45',
         location: 'Salão Principal',
         category: 'all',
-        description: 'Momentos em que reunimos toda a malta para o ensaio geral.',
         highlight: true
       },
       {
@@ -107,8 +102,7 @@ const ProgramPage = () => {
         time: '19:00 - 20:30',
         location: 'EMU- Espaço Multi-uso',
         category: 'all',
-        description: 'Estaremos reunidos no EMU para desfrutar de mais uma refeição.',
-      },
+        },
       {
         id: 11,
         title: 'Palestra',
@@ -126,23 +120,21 @@ const ProgramPage = () => {
         time: '08:00 - 09:00',
         location: 'Entrada Principal',
         category: 'all',
-        description: 'Estaremos prontos para receber-te e entregar o teu kit de participante, e junte-se a nós no pequeno almoço.',
-      },
+        },
       {
         id: 2,
         title: 'Devocional',
         time: '09:30 - 09:50',
         location: 'Salão Principal',
         category: 'all',
-        description: 'Teremos todos os dias pela manhã o nosso devocional diário após o pequeno almoço, para começar bem o dia.',
-      },
+        },
       {
         id: 4,
         title: 'Ensaios de Nipe',
         time: '10:00 - 11:30',
         location: 'Salas de instrumento',
         category: 'all',
-        description: 'Os músicos serão direcionados as salas de instrumento para poderem ter o primeiro contacto com o seu professor, onde irá guiar os ensaios e tirar suas dúvidas.',
+        highlight: true
       },
       {
         id: 5,
@@ -159,15 +151,13 @@ const ProgramPage = () => {
         time: '13:00 - 14:30',
         location: 'EMU - Espaço Multi-uso',
         category: 'all',
-        description: 'Teremos bons momentos juntos, compartilhando experiências e degustando uma boa refeição',
-        highlight: true
-      },{
+        },{
         id: 7,
         title: 'Ensaios de Nipe',
         time: '15:00 - 16:00',
         location: 'Salas de instrumentos',
         category: 'all',
-        description: 'Os alunos devem ir até as salas de seu nipe, para os ensaios do dia.',
+        highlight: true
       },
       {
         id: 8,
@@ -175,15 +165,13 @@ const ProgramPage = () => {
         time: '16:00 - 17:00',
         location: 'All Space',
         category: 'all',
-        description: 'Learn to prepare traditional dishes from the Antioquia region with local chefs.',
-      },
+        },
       {
         id: 9,
         title: 'Ensaios Gerais',
         time: '17:00 - 18:45',
         location: 'Salão Principal',
         category: 'all',
-        description: 'Momentos em que reunimos toda a malta para o ensaio geral.',
         highlight: true
       },
       {
@@ -192,8 +180,7 @@ const ProgramPage = () => {
         time: '19:00 - 20:30',
         location: 'EMU- Espaço Multi-uso',
         category: 'all',
-        description: 'Estaremos reunidos no EMU para desfrutar de mais uma refeição.',
-      },
+        },
       {
         id: 11,
         title: 'Mesa Redonda',
@@ -211,54 +198,49 @@ const ProgramPage = () => {
         time: '08:00 - 09:30',
         location: 'Entrada Principal',
         category: 'all',
-        description: 'Estaremos prontos para receber-te e entregar o teu kit de participante, e junte-se a nós no pequeno almoço.',
-      },
+        },
       {
         id: 2,
         title: 'Devocional matinal',
         time: '09:30 - 10:00',
         location: 'Salão Principal',
         category: 'all',
-        description: 'Teremos todos os dias pela manhã o nosso devocional diário após o pequeno almoço, para começar bem o dia.',
-      },
+        },
       {
         id: 4,
-        title: 'Ensaio Geral',
+        title: 'Ensaio Tutti',
         time: '10:00 - 12:00',
         location: 'Salão Principal',
         category: 'all',
-        description: 'Ensaios gerais para alinhar o que foi estudado por nipes.',
-      },
-      {
-        id: 5,
-        title: 'Convívio/Almoço',
-        time: '12:00 - 14:00',
-        location: 'EMU - Espaço Multi-uso',
-        category: 'all',
-        description: 'Teremos bons momentos juntos, compartilhando experiências e degustando uma boa refeição',
         highlight: true
       },
       {
-        id: 6,
-        title: 'Passagem de Som',
-        time: '14:00 - 15:00',
+        id: 5,
+        title: 'Almoço',
+        time: '12:00 - 14:00',
         location: 'EMU - Espaço Multi-uso',
+        category: 'all',
+        },
+      {
+        id: 6,
+        title: 'Ensaio Geral',
+        time: '14:00 - 15:00',
+        location: 'Salão Principal',
         category: 'all',
         description: 'Para que esteja tudo certinho para o concerto, teremos a passagem de Som após o almoço.',
         highlight: true
       },
       {
         id: 7,
-        title: 'Tempo Livre - Preparação para o concerto',
-        time: '15:00 - 17:00',
+        title: 'Convívio',
+        time: '15:00 - 16:30',
         location: 'All Space',
         category: 'all',
-        description: 'Os inscritos estaram a vontade para se preparar para o concerto.',
-      },
+        },
       {
         id: 8,
-        title: 'Concerto e encerramento do Festival de Música Antioquia 2025',
-        time: '17:00 - 18:00',
+        title: 'Concerto de Encerramento',
+        time: '16:30 - 18:00',
         location: 'Salão Principal',
         category: 'public',
         description: 'Este evento é público a quem quiser assistir, porém requer reserva antecipada, pois temos limitações de capacidade.',
@@ -285,7 +267,7 @@ const ProgramPage = () => {
         <div className="container">
           <SectionTitle
             title="Programa"
-            subtitle="Horário dos eventos e atividades ao longo de todo o Festival."
+            subtitle={`"Tudo, porém, seja feito com decência e ordem." \n1 Corintios 14:40`}
             centered={true}
             light={true}
           />
@@ -356,11 +338,11 @@ const ProgramPage = () => {
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                       <div>
                         <h3 className="text-xl font-bold">{event.title}</h3>
-                        {event.highlight && (
+                        {/* {event.highlight && (
                           <span className="inline-block bg-primary/10 text-primary text-xs font-medium px-2 py-1 rounded mt-1">
                             Featured Event
                           </span>
-                        )}
+                        )} */}
                       </div>
                       <div className="flex flex-wrap gap-3">
                         <div className="flex items-center text-gray-600 text-sm">

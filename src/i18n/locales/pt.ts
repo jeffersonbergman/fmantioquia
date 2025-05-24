@@ -46,10 +46,10 @@ export default {
   },
   about: {
     title: 'Sobre o Festival de Música Antioquia',
-    subtitle: '“Deem ao Senhor a glória devida ao seu nome, adorem o Senhor na beleza da sua santidade. — Salmos 29:2”',
+    subtitle: '“Dêem ao Senhor a glória devida ao Seu nome, adorem o Senhor na beleza da Sua santidade." \nSalmos 29:2',
     mission: {
       title: 'Nossa Missão',
-      description: 'Queremos oferecer-lhes um ambiente onde possam desenvolver as suas habilidades musicais e técnicas, além de aprofundar o seu entendimento bíblico e espiritual. A nossa missão é ajudá-los a refletir e amadurecer a forma como percebem o tempo de adoração congregacional, valorizando a música sacra como uma expressão genuína de louvor a Deus. '
+      description: 'Queremos oferecer um ambiente onde possam desenvolver as suas habilidades musicais e técnicas, além de aprofundar o seu entendimento bíblico e espiritual. A nossa missão é ajudar a refletir e amadurecer a forma como percebem o tempo de adoração congregacional, valorizando a música sacra como uma expressão genuína de louvor a Deus. '
     },
     activities: {
       masterclasses: 'Masterclasses',
