@@ -15,7 +15,6 @@ i18n
     fallbackLng: 'pt',      // fallback sempre pt
     lng: 'pt',              // força pt como padrão inicial
     detection: {
-      // Define as ordens de detecção, mas dá preferência para o idioma definido
       order: ['localStorage', 'sessionStorage', 'cookie', 'navigator'],
       caches: ['localStorage', 'cookie']
     },

@@ -137,8 +137,8 @@ const VenuePage = () => {
       <section className="py-16 bg-gray-50">
         <div className="container">
           <SectionTitle
-            title="Festival Venues"
-            subtitle="Discover the various locations where performances and activities will take place"
+            title="Localização do Festival"
+            subtitle="Descubra o local onde acontecerá o Festival de Música Antioquia"
             centered={true}
           />
           

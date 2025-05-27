@@ -63,8 +63,8 @@ const ProgramPage = () => {
         title: 'Palestra',
         time: '12:00 - 13:00',
         location: 'Salão principal',
-        category: 'all',
-        description: 'As palestras serão ministradas com os temas desta edição do Festival. Tomem nota para fazerem perguntas aos ministro.',
+        category: 'public',
+        description: 'As palestras serão ministradas com os temas desta edição do Festival. Anotem dúvidas ou questões - teremos um momento para as partilhares.',
         highlight: true
       },
       {
@@ -108,7 +108,7 @@ const ProgramPage = () => {
         title: 'Palestra',
         time: '21:00 - 22:00',
         location: 'Salão principal',
-        category: 'all',
+        category: 'public',
         description: 'As palestras serão ministradas com os temas desta edição do Festival. Anotem dúvidas ou questões - teremos um momento para as partilhares.',
         highlight: true
       }
@@ -141,7 +141,7 @@ const ProgramPage = () => {
         title: 'Palestra',
         time: '12:00 - 13:00',
         location: 'Salão principal',
-        category: 'all',
+        category: 'public',
         description: 'As palestras serão ministradas com os temas desta edição do Festival. Tomem nota para fazerem perguntas aos ministro.',
         highlight: true
       },
@@ -201,7 +201,7 @@ const ProgramPage = () => {
         },
       {
         id: 2,
-        title: 'Devocional matinal',
+        title: 'Devocional',
         time: '09:30 - 10:00',
         location: 'Salão Principal',
         category: 'all',
