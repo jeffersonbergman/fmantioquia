@@ -9,17 +9,15 @@ i18n
   .use(initReactI18next)
   .init({
     resources: {
-      en: {
-        translation: enTranslations
-      },
-      pt: {
-        translation: ptTranslations
-      }
+      en: { translation: enTranslations },
+      pt: { translation: ptTranslations }
     },
-    fallbackLng: 'en',
-    interpolation: {
-      escapeValue: false
-    }
+    fallbackLng: 'pt',      // fallback sempre pt
+    lng: 'pt',              // força pt como padrão inicial
+    detection: {
+      // Define as ordens de detecção, mas dá preferência para o idioma definido
+      order: ['localStorage', 'sessionStorage', 'cookie', 'navigator'],
+      caches: ['localStorage', 'cookie']
+    },
+    interpolation: { escapeValue: false }
   });
-
-export default i18n;
