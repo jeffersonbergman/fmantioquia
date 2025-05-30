@@ -10,6 +10,7 @@ import { products } from '../stripe-config';
 import SectionTitle from '../components/UI/SectionTitle';
 import Button from '../components/UI/Button';
 import { supabase } from '../lib/supabaseClient';
+import { supabase2 } from '../lib/supabaseClient';
 import { registerUser } from '../lib/registerUser';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -170,75 +171,80 @@ useEffect(() => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      setUploadStatus('progress');
-      setIsProcessing(true);
+  setUploadStatus('progress');
+  setIsProcessing(true);
 
-      try {
-        // Registrar usuário primeiro
-        await registerUser(values);
+  try {
+    // 1. Registrar usuário primeiro (no projeto original)
+    await registerUser(values);
 
-        // Atualizar contadores usando RPC
-        const { error: primaryError } = await supabase.rpc(
-          'increment_instrument_count',
-          { instrument_name: values.instrument }
-        );
+    // 2. Enviar o vídeo para o NOVO PROJETO (SUPABASE 2)
+    if (values.videoFile) {
+      setIsUploading(true);
+      setUploadProgress(0);
 
-        if (primaryError) throw primaryError;
+      // Gera um nome único para o arquivo (ex: email + timestamp)
+      const fileExt = values.videoFile.name.split('.').pop();
+      const fileName = `${values.email.replace(/[@.]/g, '_')}_${Date.now()}.${fileExt}`;
 
-        if (values.secondInstrument) {
-          const { error: secondaryError } = await supabase.rpc(
-            'increment_instrument_count',
-            { instrument_name: values.secondInstrument }
-          );
-          if (secondaryError) throw secondaryError;
-        }
-
-        setUploadStatus('success');
-        toast.success(t('Inscrição realizada com sucesso!'), {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
+      // Faz o upload para o bucket 'videos' do segundo projeto
+      const { data: uploadData, error: uploadError } = await supabase2.storage
+        .from('videos') // Nome do bucket no segundo projeto
+        .upload(`audicoes/${fileName}`, values.videoFile, {
+          cacheControl: '3600',
+          contentType: values.videoFile.type,
+          upsert: false,
         });
-        setTimeout(() => setShowPaymentModal(true), 1000);
 
-      } catch (error) {
-        console.error('Erro no registro:', error);
+      if (uploadError) throw new Error(`Falha no upload do vídeo: ${uploadError.message}`);
 
-        let errorMessage = t('registration.errors.general');
+      console.log('Vídeo enviado com sucesso:', uploadData.path);
+      setUploadProgress(100);
+    }
 
-        if (error.message && error.message.includes('duplicate key value')) {
-          errorMessage = t('Email já está cadastrado') || t('Email já está cadastrado');
-          setFormErrors({
-            email: errorMessage,
-            general: ''
-          });
-        } else {
-          setFormErrors({
-            email: '',
-            general: errorMessage
-          });
-        }
+    // 3. Atualizar contadores de instrumentos (no projeto original)
+    const { error: primaryError } = await supabase.rpc('increment_instrument_count', {
+      instrument_name: values.instrument,
+    });
+    if (primaryError) throw primaryError;
 
-        setUploadStatus('error');
-        setInstrumentLimitError(error.message || 'Erro ao atualizar contadores de instrumentos');
+    if (values.secondInstrument) {
+      const { error: secondaryError } = await supabase.rpc('increment_instrument_count', {
+        instrument_name: values.secondInstrument,
+      });
+      if (secondaryError) throw secondaryError;
+    }
 
-        toast.error(errorMessage, {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      } finally {
-        setIsProcessing(false);
-      }
-    },
+    // Sucesso!
+    setUploadStatus('success');
+    toast.success(t('Inscrição realizada com sucesso!'), {
+      position: 'bottom-right',
+      autoClose: 5000,
+    });
+    setTimeout(() => setShowPaymentModal(true), 1000);
+
+  } catch (error) {
+    console.error('Erro no processo:', error);
+    setUploadStatus('error');
+
+    // Tratamento de erros específicos
+    let errorMessage = t('registration.errors.general');
+    if (error.message.includes('duplicate key value')) {
+      errorMessage = t('Email já está cadastrado');
+      setFormErrors({ email: errorMessage, general: '' });
+    } else {
+      setFormErrors({ email: '', general: error.message || errorMessage });
+    }
+
+    toast.error(errorMessage, {
+      position: 'bottom-right',
+      autoClose: 5000,
+    });
+  } finally {
+    setIsProcessing(false);
+    setIsUploading(false);
+  }
+},
   });
   
   const secondInstrumentOptions = instrumentsData.filter(item => {
