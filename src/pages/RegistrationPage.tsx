@@ -10,6 +10,9 @@ import { products } from '../stripe-config';
 import SectionTitle from '../components/UI/SectionTitle';
 import Button from '../components/UI/Button';
 import { supabase } from '../lib/supabaseClient';
+import { registerUser } from '../lib/registerUser';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RegistrationPage = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -18,11 +21,69 @@ const RegistrationPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [formErrors, setFormErrors] = useState({
+  email: '',
+  general: ''
+});
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState('');
+  const updateInstrumentCount = async (instrumentName) => {
+    try {
+      // Incrementa o count do instrumento
+      const { data, error } = await supabase
+        .from('instruments')
+        .select('count')
+        .eq('name', instrumentName)
+        .single();
+
+      if (error) {
+        console.error('Erro ao buscar contagem do instrumento:', error);
+        return;
+      }
+
+      const newCount = (data.count || 0) + 1;
+
+      const { error: updateError } = await supabase
+        .from('instruments')
+        .update({ count: newCount })
+        .eq('name', instrumentName);
+
+      if (updateError) {
+        console.error('Erro ao atualizar contagem do instrumento:', updateError);
+      } else {
+        // Atualiza o estado local para refletir a mudança (opcional)
+        setInstrumentCounts(prev => ({
+          ...prev,
+          [instrumentName]: newCount,
+        }));
+      }
+    } catch (err) {
+      console.error('Erro na função updateInstrumentCount:', err);
+    }
+  };
+
+  const checkInstrumentAvailability = async (instrumentName) => {
+  const { data, error } = await supabase
+    .from('instruments')
+    .select('count, max_slots')
+    .eq('name', instrumentName)
+    .single();
+
+  if (error) {
+    console.error('Erro ao verificar instrumento:', error);
+    return false;
+  }
+
+  return data.count < data.max_slots;
+};
 
   const registrationFee = {
     amount: 30,
     currency: '€',
-    description: 'Full Festival Pass including all masterclasses, workshops, and performances',
+    description: 'O valor da inscrição cobre os custos de alimentação durante todo o evento.',
   };
 
 const [instrumentsData, setInstrumentsData] = useState([]);
@@ -35,7 +96,7 @@ useEffect(() => {
   const fetchInstruments = async () => {
     const { data, error } = await supabase
       .from('instruments')
-      .select('name, limit, count')
+      .select('name, max_slots, count')
       .order('name');
 
     if (error) {
@@ -47,7 +108,7 @@ useEffect(() => {
       const limits = {};
       data.forEach(item => {
         counts[item.name] = item.count;
-        limits[item.name] = item.limit;
+        limits[item.name] = item.max_slots;
       });
 
       setInstrumentCounts(counts);
@@ -75,101 +136,124 @@ useEffect(() => {
 }, [instrumentsData]);
 
   const validationSchema = Yup.object({
-  fullName: Yup.string().required('Full name is required').min(2, 'Name must be at least 2 characters'),
-  email: Yup.string().email('Invalid email address').required('Email is required'),
-  phone: Yup.string().required('Phone number is required').matches(/^[0-9+\s()-]{8,20}$/, 'Invalid phone number format'),
-  instrument: Yup.string().required('Please select your instrument'),
-  secondInstrument: Yup.string().test(
-    'not-same-as-instrument',
-    'Primary and secondary instruments cannot be the same',
-    function (value) {
-      const { instrument } = this.parent;
-      return !value || value !== instrument;
-    }
-  ),
-  experience: Yup.string().required('Please describe your orchestral experience'),
-  videoFile: Yup.mixed().required('Please upload your audition video'),
-  specialRequirements: Yup.string(),
-  agreeTerms: Yup.boolean().oneOf([true], 'You must agree to the terms and conditions'),
-  agreePrivacy: Yup.boolean().oneOf([true], 'You must agree to the privacy policy'),
-});
-
+    fullName: Yup.string().required('Full name is required').min(2, 'Name must be at least 2 characters'),
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    phone: Yup.string().required('Phone number is required').matches(/^[0-9+\s()-]{8,20}$/, 'Invalid phone number format'),
+    instrument: Yup.string().required('Please select your instrument'),
+    secondInstrument: Yup.string().test(
+      'not-same-as-instrument',
+      'Primary and secondary instruments cannot be the same',
+      function (value) {
+        const { instrument } = this.parent;
+        return !value || value !== instrument;
+      }
+    ),
+    experience: Yup.string().required('Please describe your orchestral experience'),
+    videoFile: Yup.mixed().required('Please upload your audition video'), // mantém validação, mas não envia
+    specialRequirements: Yup.string(),
+    agreeTerms: Yup.boolean().oneOf([true], 'You must agree to the terms and conditions'),
+    agreePrivacy: Yup.boolean().oneOf([true], 'You must agree to the privacy policy'),
+  });
 
   const formik = useFormik({
     initialValues: {
-  fullName: '',
-  email: '',
-  phone: '',
-  instrument: '',
-  secondInstrument: '',
-  experience: '',
-  videoFile: null,
-  specialRequirements: '',
-  agreeTerms: false,
-  agreePrivacy: false,
-},
+      fullName: '',
+      email: '',
+      phone: '',
+      instrument: '',
+      secondInstrument: '',
+      experience: '',
+      videoFile: null,
+      specialRequirements: '',
+      agreeTerms: false,
+      agreePrivacy: false,
+    },
     validationSchema,
     onSubmit: async (values) => {
-  setInstrumentLimitError('');
-  const selected = values.instrument;
-  const second = values.secondInstrument;
-  const currentCount = instrumentCounts[selected] || 0;
-  const maxAllowed = instrumentLimits[selected];
+      setUploadStatus('progress');
+      setIsProcessing(true);
 
-  if (currentCount >= maxAllowed) {
-    if (!second || instrumentCounts[second] >= instrumentLimits[second]) {
-      setInstrumentLimitError(`Desculpe, atingimos o limite para o instrumento ${selected}${second ? ` e ${second}` : ''}. Por favor entre em contacto conosco.`);
-      return;
-    }
-  }
+      try {
+        // Registrar usuário primeiro
+        await registerUser(values);
 
-  try {
-    // Aqui você salva os dados no Supabase
-    const { data, error } = await supabase.from('registrations').insert([
-      {
-        full_name: values.fullName,
-        email: values.email,
-        phone: values.phone,
-        instrument: selected,
-        second_instrument: second,
-        experience: values.experience,
-        special_requirements: values.specialRequirements,
-        // opcional: pode incluir o nome do arquivo de vídeo
-      },
-    ]);
+        // Atualizar contadores usando RPC
+        const { error: primaryError } = await supabase.rpc(
+          'increment_instrument_count',
+          { instrument_name: values.instrument }
+        );
 
-    if (error) {
-      console.error('Erro ao salvar registro:', error);
-      alert('Erro ao enviar sua inscrição. Tente novamente mais tarde.');
-      return;
-    }
+        if (primaryError) throw primaryError;
 
-    // Exibe modal com instruções de pagamento
-    setShowPaymentModal(true);
-  } catch (error) {
-    console.error('Erro ao enviar formulário:', error);
-    alert('Erro inesperado. Tente novamente mais tarde.');
-  }
-}
+        if (values.secondInstrument) {
+          const { error: secondaryError } = await supabase.rpc(
+            'increment_instrument_count',
+            { instrument_name: values.secondInstrument }
+          );
+          if (secondaryError) throw secondaryError;
+        }
+
+        setUploadStatus('success');
+        toast.success(t('Inscrição realizada com sucesso!'), {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setTimeout(() => setShowPaymentModal(true), 1000);
+
+      } catch (error) {
+        console.error('Erro no registro:', error);
+
+        let errorMessage = t('registration.errors.general');
+
+        if (error.message && error.message.includes('duplicate key value')) {
+          errorMessage = t('Email já está cadastrado') || t('Email já está cadastrado');
+          setFormErrors({
+            email: errorMessage,
+            general: ''
+          });
+        } else {
+          setFormErrors({
+            email: '',
+            general: errorMessage
+          });
+        }
+
+        setUploadStatus('error');
+        setInstrumentLimitError(error.message || 'Erro ao atualizar contadores de instrumentos');
+
+        toast.error(errorMessage, {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } finally {
+        setIsProcessing(false);
+      }
+    },
+  });
+  
+  const secondInstrumentOptions = instrumentsData.filter(item => {
+  const currentCount = instrumentCounts[item.name] || 0;
+  const maxLimit = calculatedLimits[item.name] || 0;
+  return currentCount < maxLimit;
 });
 
-const [showPaymentModal, setShowPaymentModal] = useState(false);
-{showPaymentModal && (
-  <div className="modal">
-    <h2>Instruções de Pagamento</h2>
-    <p>Para confirmar tua vaga, realize o pagamento de €30 por transferencia, não esqueças de Identificar o nome do inscrito no pagamento.</p>
-    <p><strong>IBAN:</strong> PT50 </p>
-    <p>Após efetuar a transferência, envie o comprovante de pagamento com o nome do inscrito para o email: festivalantioquia@gmail.com</p>
-    <button onClick={() => setShowPaymentModal(false)}>Fechar</button>
-  </div>
-)}
   return (
     <>
       <section className="pt-32 pb-16 bg-secondary text-white">
         <div className="container">
           <SectionTitle
-            title="Registration"
-            subtitle="Join us for a week of orchestral excellence"
+            title="Inscrição"
+            subtitle={`"Vinde, cantemos ao Senhor, com júbilo, celebremos o Rochedo da nossa salvação" \nSalmos 95: 1`}
             centered={true}
             light={true}
           />
@@ -216,7 +300,7 @@ const [showPaymentModal, setShowPaymentModal] = useState(false);
                       <p className="text-gray-700 mb-4">
                         Grave um vídeo de 30 segundos tocando seu instrumento para que possamos conhecer melhor sua habilidade musical.
                         Este não é um processo eliminatório, mas sim uma oportunidade para entendermos seu nível, integrá-lo da melhor forma possível e definir as posições na orquestra.
-                        O valor da inscrição cobre os custos de alimentação durante todo o evento.
+                        
                       </p>
                       <div className="bg-primary/5 p-4 rounded-lg">
                         <h4 className="font-semibold mb-2">Valor da Inscrição: {registrationFee.currency}{registrationFee.amount}</h4>
@@ -304,32 +388,35 @@ const [showPaymentModal, setShowPaymentModal] = useState(false);
                           Instrumento Primário <span className="text-error">*</span>
                         </label>
                         <select
-                            id="instrument"
-                            name="instrument"
-                            className={`form-input ${formik.touched.instrument && formik.errors.instrument ? 'border-error' : ''}`}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.instrument}
-                          >
-                            <option value="">Selecione seu instrumento principal</option>
-                            {instrumentsData.map((instrument) => {
-                              const available = instrument.limit - instrument.count;
-                              return (
-                                <option
-                                  key={instrument.name}
-                                  value={instrument.name}
-                                  disabled={available <= 0}
-                                >
-                                  {instrument.name} ({available} slots left)
-                                </option>
-                              );
-                            })}
-                          </select>
+                          id="instrument"
+                          name="instrument"
+                          className={`form-input ${formik.touched.instrument && formik.errors.instrument ? 'border-error' : ''}`}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.instrument}
+                        >
+                          <option value="">Selecione seu instrumento principal</option>
+                          {instrumentsData.map((instrument) => {
+                            const available = instrument.max_slots - instrument.count;
+                            const isAvailable = available > 0;
+                            
+                            return (
+                              <option
+                                key={instrument.name}
+                                value={instrument.name}
+                                disabled={!isAvailable}
+                              >
+                                {instrument.name} {isAvailable 
+                                  ? `(${available} vagas restantes)` 
+                                  : '(Vagas esgotadas)'}
+                              </option>
+                            );
+                          })}
+                        </select>
                         {formik.touched.instrument && formik.errors.instrument && (
                           <p className="mt-1.5 text-sm text-error">{formik.errors.instrument}</p>
                         )}
                       </div>
-
                       {/* Secondary Instrument (optional) */}
                       <div className="mb-4">
                         <label htmlFor="secondaryInstrument" className="form-label">
@@ -344,14 +431,11 @@ const [showPaymentModal, setShowPaymentModal] = useState(false);
                             value={formik.values.secondInstrument}
                           >
                             <option value="">Selecione seu instrumento secundário (opcional)</option>
-                            {instrumentsData.map((instrument) => {
-                              const available = instrument.limit - instrument.count;
-                              return (
-                                <option key={instrument.name} value={instrument.name} disabled={available <= 0}>
-                                  {instrument.name} ({available} slots left)
-                                </option>
-                              );
-                            })}
+                            {secondInstrumentOptions.map(instr => (
+                              <option key={instr.name} value={instr.name}>
+                                {instr.name}
+                              </option>
+                            ))}
                           </select>
                         {formik.touched.secondaryInstrument && formik.errors.secondaryInstrument && (
                           <p className="mt-1.5 text-sm text-error">{formik.errors.secondaryInstrument}</p>
@@ -380,40 +464,73 @@ const [showPaymentModal, setShowPaymentModal] = useState(false);
                     </div>
 
                     {/* Video Submission */}
-                    <div className="mb-8">
-                      <h4 className="text-lg font-bold mb-4 pb-2 border-b border-gray-200">Upload do teu vídeo</h4>
-                      
-                      <div className="mb-4">
-                        <label htmlFor="videoFile" className="form-label">
-                          Vídeo de Apresentação (30 seconds) <span className="text-error">*</span>
-                        </label>
-                        <div className={`border-2 border-dashed rounded-lg p-6 text-center ${formik.touched.videoFile && formik.errors.videoFile ? 'border-error' : 'border-gray-300'}`}>
-                          <input
-                            id="videoFile"
-                            name="videoFile"
-                            type="file"
-                            accept="video/*"
-                            className="hidden"
-                            onChange={(event) => {
-                              formik.setFieldValue('videoFile', event.currentTarget.files?.[0]);
-                            }}
-                          />
-                          <label htmlFor="videoFile" className="cursor-pointer">
-                            <Upload size={24} className="mx-auto mb-2 text-gray-400" />
-                            <p className="text-sm text-gray-600">
-                              Clique para carregar ou arraste e solte seu arquivo aqui
-                            </p>
-                            <p className="text-xs text-gray-500 mt-1">
-                              Tamanho máximo do arquivo: 50 MB. Formatos suportados: MP4, MOV
-                            </p>
-                          </label>
-                        </div>
-                        {formik.touched.videoFile && formik.errors.videoFile && (
-                          <p className="mt-1.5 text-sm text-error">{formik.errors.videoFile}</p>
+                          {isUploading ? (
+                            <div className="border-2 border-gray-300 rounded-xl p-6 shadow-sm bg-white">
+                              <div className="flex items-center gap-4 mb-3">
+                                <div className="flex-1 bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                                  <div
+                                    className="bg-primary h-2.5 rounded-full transition-all duration-300 ease-out"
+                                    style={{ width: `${uploadProgress}%` }}
+                                  ></div>
+                                </div>
+                                <span className="text-sm font-medium text-gray-700 w-12 text-right">{uploadProgress}%</span>
+                              </div>
+
+                              {uploadStatus === 'progress' && (
+                                <p className="text-sm text-gray-600 text-center mt-2 animate-pulse">
+                                  ⏳ Enviando seu vídeo... não feche esta página.
+                                </p>
+                              )}
+
+                              {uploadStatus === 'success' && (
+                                <div className="flex items-center justify-center gap-2 text-green-600 font-medium mt-2">
+                                  <Check size={18} />
+                                  <span>✅ Vídeo enviado com sucesso!</span>
+                                </div>
+                              )}
+
+                              {uploadStatus === 'error' && (
+                                <div className="flex items-center justify-center gap-2 text-red-600 font-medium mt-2">
+                                  <AlertCircle size={18} />
+                                  <span>❌ Erro no envio. Tente novamente.</span>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <div className={`border-2 border-dashed rounded-xl p-6 text-center transition-colors duration-300 ${formik.touched.videoFile && formik.errors.videoFile ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white'}`}>
+                              <input
+                                id="videoFile"
+                                name="videoFile"
+                                type="file"
+                                accept="video/*"
+                                className="hidden"
+                                onChange={(event) => {
+                                  formik.setFieldValue('videoFile', event.currentTarget.files?.[0]);
+                                }}
+                                disabled={isUploading}
+                              />
+                              <label htmlFor="videoFile" className="cursor-pointer flex flex-col items-center">
+                                <Upload size={28} className="text-gray-400 mb-2" />
+                                <p className="text-sm text-gray-700 font-medium">Clique ou arraste para carregar seu vídeo</p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  Tamanho máximo: 50MB | Formatos: MP4, MOV
+                                </p>
+                              </label>
+                            </div>
+                          )}
+
+                          {/* Erro de validação */}
+                          {formik.touched.videoFile && formik.errors.videoFile && (
+                            <p className="mt-1.5 text-sm text-red-600">{formik.errors.videoFile}</p>
+                          )}
+                        
+                        {/* Mostrar pré-visualização do nome do arquivo quando selecionado */}
+                        {formik.values.videoFile && !isUploading && (
+                          <div className="mt-2 flex items-center gap-2 text-sm text-gray-700">
+                            <Check className="text-success" size={16} />
+                            <span>Arquivo selecionado: {formik.values.videoFile.name}</span>
+                          </div>
                         )}
-                      </div>
-                    </div>
-                    
                     {/* Additional Information */}
                     <div className="mb-8">
                       <h4 className="text-lg font-bold mb-4 pb-2 border-b border-gray-200">Informações Adicionais</h4>
@@ -496,8 +613,8 @@ const [showPaymentModal, setShowPaymentModal] = useState(false);
                         variant="primary"
                         size="lg"
                         fullWidth
-                        isLoading={formik.isSubmitting}
-                        disabled={formik.isSubmitting}
+                        isLoading={isProcessing} // Usa o novo estado
+                        disabled={isProcessing}
                       >
                         Finalize sua Inscrição ({registrationFee.currency}{registrationFee.amount})
                       </Button>
@@ -509,6 +626,28 @@ const [showPaymentModal, setShowPaymentModal] = useState(false);
           </div>
         </div>
       </section>
+
+      {showPaymentModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto p-6 shadow-lg">
+              <h2 className="text-2xl font-bold mb-4">Instruções de Pagamento</h2>
+              <p>Para confirmar tua vaga, realize o pagamento de €30 por transferência, não esqueças de identificar o nome do inscrito no pagamento.</p>
+              <p><strong>IBAN:</strong> PT50 0010 0000 1321 4360 0016 5 </p>
+              <p>Após efetuar a transferência, envie o comprovante de pagamento com o nome do inscrito para o email: festivalantioquia@gmail.com</p>
+              <div className="mt-6 text-right">
+                <Button
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                  onClick={() => {
+                    setShowPaymentModal(false);
+                    window.location.reload(); // recarrega a página ao fechar
+                  }}
+                >
+                  Fechar
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
       {/* Privacy Policy Modal */}
       {showPrivacyPolicy && (
@@ -562,6 +701,7 @@ const [showPaymentModal, setShowPaymentModal] = useState(false);
           </div>
         </div>
       )}
+      <ToastContainer />
     </>
   );
 };

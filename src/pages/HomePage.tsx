@@ -317,6 +317,8 @@ const HomePage = () => {
           Inscrições limitadas por instrumento.
           <br />
           Dúvidas? Contate-nos: festivalantioquia@gmail.com
+          <br />
+          As Inscrições estarão disponíveis em 1 de Junho 2025
         </p>
           <Link 
             to="/registration"
