@@ -12,7 +12,7 @@ export default {
     register: 'Inscreva-se',
     viewProgram: 'Ver Programa',
     learnMore: 'Saiba Mais',
-    contact: 'Contate-nos',
+    contact: 'Contacta-nos',
     submit: 'Enviar',
     close: 'Fechar'
   },
