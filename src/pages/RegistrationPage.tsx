@@ -14,6 +14,8 @@ import { supabase2 } from '../lib/supabaseClient';
 import { registerUser } from '../lib/registerUser';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import emailjs from '@emailjs/browser';
+
 
 const RegistrationPage = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -23,6 +25,10 @@ const RegistrationPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const serviceID = 'service_2b8im5d';
+  const templateID1 = 'inscricao_obrigado';
+  const templateID2 = 'inscricao_admin';
+  const userID = 'XjH9qcmxyNSDtZpWu';
   const [isProcessing, setIsProcessing] = useState(false);
   const [formErrors, setFormErrors] = useState({
   email: '',
@@ -222,6 +228,26 @@ useEffect(() => {
       autoClose: 5000,
     });
     setTimeout(() => setShowPaymentModal(true), 1000);
+
+    await emailjs.send(serviceID, templateID1, {
+  to_name: values.fullName,
+  to_email: values.email,
+}, userID);
+
+await emailjs.send(serviceID, templateID2, {
+  from_name: values.fullName,
+  from_email: values.email,
+  telefone: values.phone,
+  experiencia: values.experience,
+  instrumento: values.instrument,
+}, userID);
+
+setUploadStatus('success');
+toast.success(t('Inscrição realizada com sucesso!'), {
+  position: 'bottom-right',
+  autoClose: 5000,
+});
+setTimeout(() => setShowPaymentModal(true), 1000);
 
   } catch (error) {
     console.error('Erro no processo:', error);
