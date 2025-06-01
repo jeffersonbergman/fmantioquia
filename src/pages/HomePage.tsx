@@ -115,8 +115,8 @@ const HomePage = () => {
               data-aos-delay="200"
             >
               <Link to="/registration">
-                <Button size="lg" variant="primary" icon={<ChevronRight size={18} />} iconPosition="right" disabled>
-                  Inscrições em breve
+                <Button size="lg" variant="primary" icon={<ChevronRight size={18} />} iconPosition="right">
+                  Inscreva-se!
                 </Button>
               </Link>
               <Link to="/program">
@@ -318,7 +318,7 @@ const HomePage = () => {
           <br />
           Dúvidas? Contate-nos: festivalantioquia@gmail.com
           <br />
-          As Inscrições estarão disponíveis em 1 de Junho 2025
+          As Inscrições estarão disponíveis até 5 de Julho 2025
         </p>
           <Link 
             to="/registration"
@@ -329,7 +329,6 @@ const HomePage = () => {
               size="lg" 
               variant="outline" 
               className="border-white text-white hover:bg-primary hover:text-primary"
-              disabled
             >
               INSCRIÇÃO
             </Button>
