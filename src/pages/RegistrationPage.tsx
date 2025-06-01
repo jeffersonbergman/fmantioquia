@@ -26,8 +26,8 @@ const RegistrationPage = () => {
   const { user } = useAuth();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const serviceID = 'service_2b8im5d';
-  const templateID1 = 'inscricao_obrigado';
-  const templateID2 = 'inscricao_admin';
+  const templateID1 = 'template_nyxqn4t';
+  const templateID2 = 'template_vonhu3h';
   const userID = 'XjH9qcmxyNSDtZpWu';
   const [isProcessing, setIsProcessing] = useState(false);
   const [formErrors, setFormErrors] = useState({
@@ -229,25 +229,27 @@ useEffect(() => {
     });
     setTimeout(() => setShowPaymentModal(true), 1000);
 
-    await emailjs.send(serviceID, templateID1, {
-  to_name: values.fullName,
-  to_email: values.email,
-}, userID);
+    await Promise.all([
+    emailjs.send(serviceID, templateID1, {
+      to_name: values.fullName,
+      to_email: values.email,
+    }, userID),
+    emailjs.send(serviceID, templateID2, {
+      from_name: values.fullName,
+      from_email: values.email,
+      telefone: values.phone,
+      experiencia: values.experience,
+      instrumento: values.instrument,
+    }, userID),
+  ]);
 
-await emailjs.send(serviceID, templateID2, {
-  from_name: values.fullName,
-  from_email: values.email,
-  telefone: values.phone,
-  experiencia: values.experience,
-  instrumento: values.instrument,
-}, userID);
-
-setUploadStatus('success');
-toast.success(t('Inscrição realizada com sucesso!'), {
-  position: 'bottom-right',
-  autoClose: 5000,
-});
-setTimeout(() => setShowPaymentModal(true), 1000);
+  // Se chegou até aqui, tudo deu certo
+  setUploadStatus('success');
+  toast.success(t('Inscrição realizada com sucesso!'), {
+    position: 'bottom-right',
+    autoClose: 5000,
+  });
+  setTimeout(() => setShowPaymentModal(true), 1000);
 
   } catch (error) {
     console.error('Erro no processo:', error);
@@ -261,6 +263,9 @@ setTimeout(() => setShowPaymentModal(true), 1000);
     } else {
       setFormErrors({ email: '', general: error.message || errorMessage });
     }
+
+    console.error('Erro no envio do e-mail:', emailError);
+    toast.error('Erro ao enviar o e-mail de confirmação.');
 
     toast.error(errorMessage, {
       position: 'bottom-right',
