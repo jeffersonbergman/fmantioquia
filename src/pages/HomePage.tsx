@@ -22,7 +22,7 @@ const HomePage = () => {
     {
       id: 1,
       name: 'Ensaios',
-      role: 'Ensaios conduzidos por professores de cada naipe',
+      role: 'Ensaios de nipe conduzidos por orientadores',
       image: '/assets/img/ensaios.jpg',
     },
     {
@@ -147,8 +147,7 @@ const HomePage = () => {
                 centered={false}
               />
               <p className="mb-6 text-gray-700" data-aos="fade-up" data-aos-delay="100">
-                A primeira edição deste evento tem como objetivo criar um espaço para músicos cristãos que, muitas vezes, não encontram oportunidades para tocar os seus instrumentos orquestrais nas suas igrejas. 
-                Queremos oferecer-lhes um ambiente onde possam exercitar as suas habilidades musicais, além de aprofundar o seu entendimento bíblico sobre a música.
+                De 13 a 16 de Agosto, a Igreja Baptista Antioquia vai transformar-se num espaço de ensaios, aprendizagem, partilha e louvor - tudo com arranjos para música orquestral de músicas cantadas no meio cristão.
               </p>
               <p className="mb-6 text-gray-700" data-aos="fade-up" data-aos-delay="150">
                 Haverá a oportunidade de refletir a forma como entendemos o tempo de adoração congregacional, 
